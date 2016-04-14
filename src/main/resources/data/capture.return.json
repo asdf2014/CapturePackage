@@ -1,0 +1,14 @@
+{
+  "version": "Version: 4 (IPv4)",
+  "ihl": "IHL: 5 (20 [bytes])",
+  "tos": "TOS: [precedence: 0 (Routine)] [tos: 0 (Default)] [mbz: 0]",
+  "totalLength": "Total length: 119 [bytes]",
+  "identification": "Identification: 26581",
+  "reservedFlag": "Flags: (Reserved, Don't Fragment, More Fragment) = (false, true, false)",
+  "fragmentOffset": "Fragment offset: 0 (0 [bytes])",
+  "ttl": "TTL: 128",
+  "protocol": "Protocol: 6 (TCP)",
+  "headerChecksum": "Header checksum: 0x173d",
+  "srcAddr": "Source address: /192.168.1.122",
+  "dstAddr": "Destination address: /103.233.81.99"
+}
