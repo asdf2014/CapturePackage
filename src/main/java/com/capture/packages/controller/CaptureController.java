@@ -29,13 +29,17 @@ public class CaptureController {
 
         LinkedList<IPv4HeaderInfos> ips = new LinkedList<>();
         try {
-//            return captureService.getPackageInfos();
             ips.add(captureService.getPackageInfos());
         } catch (Exception e) {
             e.printStackTrace();
-//            return new IPv4HeaderInfos();
         }
         return ips;
+    }
+
+    @RequestMapping(value = "/store", method = RequestMethod.GET, produces = "text/plain")
+    @ResponseBody
+    public String store(HttpServletRequest request, Model model) {
+        return captureService.storeCapturePackage() ? "{'message':'存储成功'}" : "{'message':'存储失败'}";
     }
 
 }

@@ -8,4 +8,6 @@ import com.capture.packages.model.IPv4HeaderInfos;
 public interface ICaptureService {
 
     IPv4HeaderInfos getPackageInfos() throws Exception;
+
+    boolean storeCapturePackage();
 }

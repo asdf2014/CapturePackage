@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TopN</title>
+    <title>Network Capture</title>
 
     <link rel="stylesheet" href="../../../common/lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../../../common/lib/bs-table/bootstrap-table.min.css">
@@ -13,10 +13,57 @@
     <script src="../../../common/lib/bs-table/bootstrap-table-zh-CN.min.js"></script>
 
     <link rel="stylesheet" href="../less/capture.css">
+
+    <!-- Bootstrap core CSS -->
+    <!--<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="../../../common/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <style>
+        body {
+            padding-top: 50px;
+        }
+
+        .starter-template {
+            padding: 40px 15px;
+            text-align: center;
+        }
+    </style>
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="../../../common/lib/maxcdn/html5shiv.min.js"></script>
+    <script src="../../../common/lib/maxcdn/respond.min.js"></script>
+    <![endif]-->
 </head>
 <body>
 
 <div class="container">
+
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Revenue Decision Support</a>
+            </div>
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="../../../module/network.card/view/network.html">Network Card</a></li>
+                    <li><a href="../../../module/capture/view/capture.html">Capture</a></li>
+                    <li><a href="../../../module/store/view/store.html">Store</a></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+
+
     <h2>Capture Package</h2>
     <p>Display those informations about packages.</p>
 

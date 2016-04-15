@@ -1,5 +1,6 @@
 package com.capture.packages.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.capture.packages.model.IPv4HeaderInfos;
 import com.capture.packages.service.ICaptureService;
 import com.capture.packages.utils.PropUtils;
@@ -11,8 +12,13 @@ import org.pcap4j.util.ByteArrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service("captureService")
@@ -32,6 +38,12 @@ public class ICaptureServiceImpl implements ICaptureService {
             = org.pcap4j.sample.LoopRaw.class.getName() + ".snaplen";
     private static final int SNAPLEN
             = Integer.getInteger(SNAPLEN_KEY, 65536); // [bytes]
+
+    //    private static final String ROOT_PATH = ICaptureServiceImpl.class.getClassLoader().getResource("/").getPath();
+    private static LinkedList<IPv4HeaderInfos> store = new LinkedList<>();
+
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss_SSS");
+    private static final String ROOT_PATH = "F:\\如何成为 Java 高手\\笔记\\Network\\[code]\\CapturePackage\\out\\artifacts\\CapturePackage\\WEB-INF\\classes\\store\\";
 
     @Autowired
     private PropUtils propUtils;
@@ -83,8 +95,11 @@ public class ICaptureServiceImpl implements ICaptureService {
             IPv4HeaderInfos iPv4HeaderInfos = null;
             while (reTry > 0) {
                 iPv4HeaderInfos = loopReceive(handle, listener);
-                if (iPv4HeaderInfos != null)
+                if (iPv4HeaderInfos != null) {
+//                    if (!limitIpPort(iPv4HeaderInfos))
+                        storeCapture(iPv4HeaderInfos);
                     return iPv4HeaderInfos;
+                }
                 reTry--;
             }
         } catch (Exception e) {
@@ -93,6 +108,18 @@ public class ICaptureServiceImpl implements ICaptureService {
             handle.close();
         }
         return null;
+    }
+
+    private boolean limitIpPort(IPv4HeaderInfos iPv4HeaderInfos) {
+        return propUtils.getProperty("ip.limit").equals(iPv4HeaderInfos.getSrcAddr())
+                || propUtils.getProperty("port.limit").equals(iPv4HeaderInfos.getTos());
+    }
+
+    private void storeCapture(IPv4HeaderInfos iPv4HeaderInfos) {
+        if (store.size() >= Integer.parseInt(propUtils.getProperty("store.limit"))) {
+            store.removeFirst();
+        }
+        store.addLast(iPv4HeaderInfos);
     }
 
     /**
@@ -125,4 +152,32 @@ public class ICaptureServiceImpl implements ICaptureService {
         }
         return null;
     }
+
+    @Override
+    public boolean storeCapturePackage() {
+        File storeFile = new File(ROOT_PATH.concat(
+                String.format(propUtils.getProperty("store.file.path"), sdf.format(new Date()))));
+        if (storeFile.exists())
+            storeFile.deleteOnExit();
+        FileWriter fw = null;
+        try {
+            storeFile.createNewFile();
+            fw = new FileWriter(storeFile);
+            for (IPv4HeaderInfos iPv4HeaderInfos : store) {
+                fw.write(JSON.toJSONString(iPv4HeaderInfos).concat("\r\n"));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (fw != null)
+                try {
+                    fw.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+        }
+        return true;
+    }
+
 }

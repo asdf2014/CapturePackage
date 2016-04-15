@@ -26,11 +26,19 @@ public class PropUtils {
     public void init() {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         InputStream input = classLoader.getResourceAsStream(confPath);
+        System.out.println(PropUtils.class.getClassLoader().getResource("/").getPath());
         properties = new Properties();
         try {
             properties.load(input);
         } catch (IOException e) {
             _log.error(e.getMessage());
+        } finally {
+            if (input != null)
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
         }
     }
 
