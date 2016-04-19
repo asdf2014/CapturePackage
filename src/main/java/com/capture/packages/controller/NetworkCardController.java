@@ -1,6 +1,7 @@
 package com.capture.packages.controller;
 
 import com.capture.packages.model.NetworkCardInfos;
+import com.capture.packages.model.WifiInfos;
 import com.capture.packages.service.INetworkCardService;
 import org.pcap4j.core.PcapAddress;
 import org.pcap4j.core.PcapNetworkInterface;
@@ -42,6 +43,12 @@ public class NetworkCardController {
             networkCardInfosList.add(networkCardInfos);
         }
         return networkCardInfosList;
+    }
+
+    @RequestMapping(value = "/wifi/ips", method = RequestMethod.GET, produces = "text/plain")
+    @ResponseBody
+    public List<WifiInfos> getDeviceIps(HttpServletRequest request, Model model) {
+        return networkCardService.getDeviceIps();
     }
 
 }

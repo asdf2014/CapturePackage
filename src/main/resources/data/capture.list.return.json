@@ -1,0 +1,14 @@
+{
+  "dstAddr": "Destination address: /223.252.199.6",
+  "fragmentOffset": "Fragment offset: 0 (0 [bytes])",
+  "headerChecksum": "Header checksum: 0x5646",
+  "identification": "Identification: 15070",
+  "ihl": "IHL: 5 (20 [bytes])",
+  "protocol": "Protocol: 6 (TCP)",
+  "reservedFlag": "Flags: (Reserved, Don't Fragment, More Fragment) = (false, true, false)",
+  "srcAddr": "Source address: /192.168.1.122",
+  "tos": "TOS: [precedence: 0 (Routine)] [tos: 0 (Default)] [mbz: 0]",
+  "totalLength": "Total length: 174 [bytes]",
+  "ttl": "TTL: 128",
+  "version": "Version: 4 (IPv4)"
+}

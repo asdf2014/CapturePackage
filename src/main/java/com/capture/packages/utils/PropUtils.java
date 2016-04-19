@@ -26,7 +26,7 @@ public class PropUtils {
     public void init() {
         ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         InputStream input = classLoader.getResourceAsStream(confPath);
-        System.out.println(PropUtils.class.getClassLoader().getResource("/").getPath());
+//        System.out.println(PropUtils.class.getClassLoader().getResource("/").getPath());
         properties = new Properties();
         try {
             properties.load(input);
@@ -51,9 +51,15 @@ public class PropUtils {
         return properties.getProperty(key);
     }
 
+    public Properties getProperties() {
+        return properties;
+    }
+
     @Test
     public void test() {
-        System.out.println(properties.getProperty("network.card.index"));
-        System.out.println(properties.getProperty("capture.package.retry.times"));
+        PropUtils propUtils = new PropUtils();
+        propUtils.init();
+        System.out.println(propUtils.getProperties().getProperty("network.card.index"));
+        System.out.println(propUtils.getProperties().getProperty("capture.package.retry.times"));
     }
 }

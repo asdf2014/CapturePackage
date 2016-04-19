@@ -22,7 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Service("captureService")
-public class ICaptureServiceImpl implements ICaptureService {
+public class CaptureServiceImpl implements ICaptureService {
 
     private static final String COUNT_KEY
             = org.pcap4j.sample.LoopRaw.class.getName() + ".count";
@@ -39,7 +39,7 @@ public class ICaptureServiceImpl implements ICaptureService {
     private static final int SNAPLEN
             = Integer.getInteger(SNAPLEN_KEY, 65536); // [bytes]
 
-    //    private static final String ROOT_PATH = ICaptureServiceImpl.class.getClassLoader().getResource("/").getPath();
+    //    private static final String ROOT_PATH = CaptureServiceImpl.class.getClassLoader().getResource("/").getPath();
     private static LinkedList<IPv4HeaderInfos> store = new LinkedList<>();
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss_SSS");
@@ -110,6 +110,12 @@ public class ICaptureServiceImpl implements ICaptureService {
         return null;
     }
 
+    /**
+     * 指定 IP Address进行限制
+     *
+     * @param iPv4HeaderInfos
+     * @return
+     */
     private boolean limitIpPort(IPv4HeaderInfos iPv4HeaderInfos) {
         return propUtils.getProperty("ip.limit").equals(iPv4HeaderInfos.getSrcAddr())
                 || propUtils.getProperty("port.limit").equals(iPv4HeaderInfos.getTos());
@@ -153,6 +159,14 @@ public class ICaptureServiceImpl implements ICaptureService {
         return null;
     }
 
+    /**
+     * 这里可以将最近捕获到的 Network Package保存到一个文件中，
+     * CapturePackages%s.store 作为其文件名（%s：yyyy_MM_dd_hh_mm_ss_SSS 避免文件名重复）
+     *
+     * 【注意】这里增加了代码、注释，需要重启才可以继续 debug
+     *
+     * @return
+     */
     @Override
     public boolean storeCapturePackage() {
         File storeFile = new File(ROOT_PATH.concat(
@@ -161,7 +175,7 @@ public class ICaptureServiceImpl implements ICaptureService {
             storeFile.deleteOnExit();
         FileWriter fw = null;
         try {
-            storeFile.createNewFile();
+//            storeFile.createNewFile();
             fw = new FileWriter(storeFile);
             for (IPv4HeaderInfos iPv4HeaderInfos : store) {
                 fw.write(JSON.toJSONString(iPv4HeaderInfos).concat("\r\n"));

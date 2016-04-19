@@ -64,6 +64,13 @@
     <p>Display those informations about network cards.</p>
 
     <table id="network"></table>
+    <table id="wifi_ip"></table>
+    <form action="/wifi/open" method="GET">
+        <input type="submit" id="openWifi" name="openWifi" value="openWifi"/>
+    </form>
+    <form action="/wifi/close" method="GET">
+        <input type="submit" id="closeWifi" name="closeWifi" value="closeWifi"/>
+    </form>
     <script src="../js/network.js"></script>
 </div>
 </body>

@@ -1,5 +1,6 @@
 package com.capture.packages.service;
 
+import com.capture.packages.model.WifiInfos;
 import org.pcap4j.core.PcapNetworkInterface;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
  */
 public interface INetworkCardService {
 
-
     List<PcapNetworkInterface> displayAllCards();
+
+    List<WifiInfos> getDeviceIps();
 }
