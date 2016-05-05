@@ -1,6 +1,7 @@
 package com.capture.packages.controller;
 
 import com.capture.packages.model.IPv4HeaderInfos;
+import com.capture.packages.model.StoreDao;
 import com.capture.packages.service.ICaptureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,8 +40,8 @@ public class CaptureController {
 
     @RequestMapping(value = "/store", method = RequestMethod.GET, produces = "text/plain")
     @ResponseBody
-    public String store(HttpServletRequest request, Model model) {
-        return captureService.storeCapturePackage() ? "{'message':'存储成功'}" : "{'message':'存储失败'}";
+    public List<StoreDao> store(HttpServletRequest request, Model model) {
+        return Arrays.asList(captureService.storeCapturePackage());
     }
 
 }

@@ -2,6 +2,7 @@ package com.capture.packages.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.capture.packages.model.IPv4HeaderInfos;
+import com.capture.packages.model.StoreDao;
 import com.capture.packages.service.ICaptureService;
 import com.capture.packages.utils.PropUtils;
 import org.pcap4j.core.BpfProgram.BpfCompileMode;
@@ -43,6 +44,7 @@ public class CaptureServiceImpl implements ICaptureService {
     private static LinkedList<IPv4HeaderInfos> store = new LinkedList<>();
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss_SSS");
+    private static final SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss SSS");
     private static final String ROOT_PATH = "F:\\如何成为 Java 高手\\笔记\\Network\\[code]\\CapturePackage\\out\\artifacts\\CapturePackage\\WEB-INF\\classes\\store\\";
 
     @Autowired
@@ -97,7 +99,7 @@ public class CaptureServiceImpl implements ICaptureService {
                 iPv4HeaderInfos = loopReceive(handle, listener);
                 if (iPv4HeaderInfos != null) {
 //                    if (!limitIpPort(iPv4HeaderInfos))
-                        storeCapture(iPv4HeaderInfos);
+                    storeCapture(iPv4HeaderInfos);
                     return iPv4HeaderInfos;
                 }
                 reTry--;
@@ -162,15 +164,18 @@ public class CaptureServiceImpl implements ICaptureService {
     /**
      * 这里可以将最近捕获到的 Network Package保存到一个文件中，
      * CapturePackages%s.store 作为其文件名（%s：yyyy_MM_dd_hh_mm_ss_SSS 避免文件名重复）
-     *
+     * <p>
      * 【注意】这里增加了代码、注释，需要重启才可以继续 debug
      *
      * @return
      */
     @Override
-    public boolean storeCapturePackage() {
-        File storeFile = new File(ROOT_PATH.concat(
-                String.format(propUtils.getProperty("store.file.path"), sdf.format(new Date()))));
+    public StoreDao storeCapturePackage() {
+        String fileName = String.format(propUtils.getProperty("store.file.path"), sdf.format(new Date()));
+        String path = ROOT_PATH.concat(fileName);
+        String modify = sdf2.format(new Date());
+
+        File storeFile = new File(path);
         if (storeFile.exists())
             storeFile.deleteOnExit();
         FileWriter fw = null;
@@ -182,7 +187,7 @@ public class CaptureServiceImpl implements ICaptureService {
             }
         } catch (IOException e) {
             e.printStackTrace();
-            return false;
+            return null;
         } finally {
             if (fw != null)
                 try {
@@ -191,7 +196,7 @@ public class CaptureServiceImpl implements ICaptureService {
                     e.printStackTrace();
                 }
         }
-        return true;
+        return new StoreDao(fileName, modify, path);
     }
 
 }
